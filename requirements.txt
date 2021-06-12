@@ -1,0 +1,3 @@
+telethon
+pydantic
+python-dotenv
