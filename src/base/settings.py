@@ -1,6 +1,9 @@
 from functools import lru_cache
+from typing import Type
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator
+from pydantic.schema import datetime
+from datetime import timezone, timedelta
 
 
 @lru_cache
@@ -14,6 +17,11 @@ class Settings(BaseSettings):
     chat_id: int = None
     invite_hash: str = None
     timezone: int = +3
+
+    @property
+    def tz(self) -> timezone:
+        utcoffset = self.__dict__.get('timezone')
+        return timezone(timedelta(hours=utcoffset))
 
     class Config:
         case_sensitive = True
