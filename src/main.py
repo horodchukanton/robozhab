@@ -23,10 +23,8 @@ tz = timezone(timedelta(hours=int(settings.timezone)))
 async def main(c):
 
     chat_id = settings.chat_id
-    if chat_id is None and settings.invite_hash is not None:
-        chat_id = await get_chat_id_from_invite(c, settings.invite_hash)
-    elif settings.invite_hash is None:
-        raise Exception("Either 'chat_id' or 'invite_hash' should be specified")
+    if chat_id is None:
+        raise Exception("Chat id should be specified. You can ask @tgdtoadbot.")
 
     if chat_id < 0:
         real_id, peer_type = utils.resolve_id(chat_id)
@@ -82,15 +80,6 @@ async def schedule_message(c, chat_id, text, schedule_time):
 
 async def send_message_to_chat(c, chat_id, text):
     await c.send_message(chat_id, text)
-
-
-async def get_chat_id_from_invite(c, invite_hash):
-    result = await c(functions.messages.CheckChatInviteRequest(
-        hash=invite_hash
-    ))
-    print(result.stringify())
-
-    return result.chat.id
 
 
 def get_next_offset():
