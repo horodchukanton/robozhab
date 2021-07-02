@@ -17,13 +17,11 @@ async def get_chat_id_from_invite(invite_hash):
     return result.chat.id
 
 
-async def resolve_chat_id(s):
+def resolve_chat_id(s):
     chat_id = s.chat_id
 
-    if chat_id is None and s.invite_hash is not None:
-        chat_id = await get_chat_id_from_invite(s.invite_hash)
-    elif s.invite_hash is None:
-        raise Exception("Either 'chat_id' or 'invite_hash' should be specified")
+    if chat_id is None:
+        raise Exception("No 'chat_id' was specified")
 
     if chat_id < 0:
         real_id, peer_type = utils.resolve_id(chat_id)
@@ -42,8 +40,14 @@ class Chat:
     client: APIClient
 
     def __init__(self, chat_id):
-        self.chat_id = chat_id
+        self.chat_id = self.resolve_chat_id(chat_id)
         self.client = get_client()
+
+    @staticmethod
+    def resolve_chat_id(chat_id):
+        if chat_id < 0:
+            return utils.resolve_id(chat_id)
+        return chat_id
 
     def send_message(self, message: str, **kwargs):
         return self.client.send_message(recipient=self.chat_id,

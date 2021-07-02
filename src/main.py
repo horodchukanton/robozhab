@@ -7,7 +7,7 @@ logging.basicConfig(
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
     level=logging.INFO)
 
-scheduled_days = 3
+scheduled_days = 5
 
 
 def main():

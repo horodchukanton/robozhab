@@ -17,8 +17,8 @@ class APIClient:
     settings: Settings
 
     def __init__(self):
-        telethon = self.login()
-        settings = get_settings()
+        self.telethon = self.login()
+        self.settings = get_settings()
 
     def login(self):
         settings = get_settings()
@@ -26,8 +26,9 @@ class APIClient:
         api_id = settings.api_id
         api_hash = settings.api_hash
 
-        with TelegramClient('anon', api_id, api_hash) as client:
-            return client
+        client = TelegramClient('anon', api_id, api_hash)
+        client.connect()
+        return client
 
     def send_message(self, recipient: id, message: str, **kwargs):
         """Sends message to the chat"""
@@ -42,7 +43,7 @@ class APIClient:
         if datetime.now(tz=self.settings.tz) > schedule:
             return False
 
-        return self.send_message(entity=types.PeerChannel(recipient),
+        return self.send_message(recipient=recipient,
                                  message=message,
                                  schedule=schedule,
                                  **kwargs)
@@ -53,3 +54,6 @@ class APIClient:
 
         return self.telethon.iter_messages(entity=sender, from_user=sender,
                                            **kwargs)
+
+    def __del__(self):
+        self.telethon.disconnect()

@@ -24,7 +24,7 @@ class Game(Chat):
 
         return result
 
-    async def schedule_day(self, date: datetime):
+    def schedule_day(self, date: datetime):
         # Normalizing
         date = date.replace(hour=0, minute=0, second=0)
 
@@ -36,23 +36,23 @@ class Game(Chat):
         feed_text = "Покормить жабу"
         first_feed = date + timedelta(hours=0, minutes=0)
         second_feed = date + timedelta(hours=12, minutes=0)
-        await self.schedule_message(feed_text, first_feed)
-        await self.schedule_message(feed_text, second_feed)
+        self.schedule_message(feed_text, first_feed)
+        self.schedule_message(feed_text, second_feed)
 
         # Work time ( Every 6 hours )
         work_text = "Работа крупье"
         first_work = date + timedelta(hours=0, minutes=0)
         second_work = date + timedelta(hours=8, minutes=0)
         third_work = date + timedelta(hours=16, minutes=0)
-        await self.schedule_message(work_text, first_work)
-        await self.schedule_message(work_text, second_work)
-        await self.schedule_message(work_text, third_work)
+        self.schedule_message(work_text, first_work)
+        self.schedule_message(work_text, second_work)
+        self.schedule_message(work_text, third_work)
 
         # Finish work ( 2 hours after work )
         finish_work_text = "Завершить работу"
         first_work_end = date + timedelta(hours=2, minutes=1)
         second_work_end = date + timedelta(hours=10, minutes=1)
         third_work_end = date + timedelta(hours=18, minutes=1)
-        await self.schedule_message(finish_work_text, first_work_end)
-        await self.schedule_message(finish_work_text, second_work_end)
-        await self.schedule_message(finish_work_text, third_work_end)
+        self.schedule_message(finish_work_text, first_work_end)
+        self.schedule_message(finish_work_text, second_work_end)
+        self.schedule_message(finish_work_text, third_work_end)
