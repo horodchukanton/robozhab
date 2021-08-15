@@ -12,4 +12,4 @@ This is a python telethon based client that will go and schedule your daily mess
 4. Ask @tgtoadbot "Мои жабы" to get the **chat_id**
 5. Run python ``python src/main.py``
 6. You will need to log in with your phone number, and password
-7. Then Robozhab will schedule messages for the next 3 days.
+7. Then Robozhab will schedule messages for the next 3 (or configured) days.
