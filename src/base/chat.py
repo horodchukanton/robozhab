@@ -1,20 +1,9 @@
 from datetime import datetime
 
 from telethon import utils
-from telethon.tl import functions
 
 from base.settings import Settings
 from base.tg_client import get_client, APIClient
-
-
-async def get_chat_id_from_invite(invite_hash):
-    c = get_client()
-
-    result = await c(functions.messages.CheckChatInviteRequest(
-        hash=invite_hash
-    ))
-
-    return result.chat.id
 
 
 def resolve_chat_id(s):

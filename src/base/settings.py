@@ -13,7 +13,6 @@ class Settings(BaseSettings):
     api_id: str
     api_hash: str
     chat_id: int = None
-    invite_hash: str = None
     timezone: int = +3
 
     schedule_days: int = 5
