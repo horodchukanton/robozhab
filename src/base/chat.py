@@ -55,7 +55,7 @@ class Chat:
 
     def schedule_message(self, message: str, schedule: datetime, **kwargs):
         return self.client.schedule_message(recipient=self.chat_id,
-                                            schedule=schedule,
+                                            schedule=schedule, silent=True,
                                             message=message, **kwargs)
 
     def messages_of(self, *args, **kwargs):
