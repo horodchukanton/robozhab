@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime
 
-from src.base.chat import Chat, resolve_chat_id
+from base.chat import Chat, resolve_chat_id
 
 
 def from_settings(settings):
@@ -32,27 +32,19 @@ class Game(Chat):
         offset = self.get_next_offset()
         date = date + timedelta(minutes=offset)
 
-        # Feed time ( Every 12 hours )
+        # Feed time ( Every 6 hours )
+        feed_step = 6
         feed_text = "Покормить жабу"
-        first_feed = date + timedelta(hours=0, minutes=0)
-        second_feed = date + timedelta(hours=12, minutes=0)
-        self.schedule_message(feed_text, first_feed)
-        self.schedule_message(feed_text, second_feed)
+        for i in range(0, 24, feed_step):
+            feed_time = date + timedelta(hours=i, minutes=0)
+            self.schedule_message(feed_text, feed_time)
 
-        # Work time ( Every 6 hours )
+        # Work time ( Every 8 hours )
+        work_step = 8
         work_text = "Работа крупье"
-        first_work = date + timedelta(hours=0, minutes=0)
-        second_work = date + timedelta(hours=8, minutes=0)
-        third_work = date + timedelta(hours=16, minutes=0)
-        self.schedule_message(work_text, first_work)
-        self.schedule_message(work_text, second_work)
-        self.schedule_message(work_text, third_work)
-
-        # Finish work ( 2 hours after work )
         finish_work_text = "Завершить работу"
-        first_work_end = date + timedelta(hours=2, minutes=1)
-        second_work_end = date + timedelta(hours=10, minutes=1)
-        third_work_end = date + timedelta(hours=18, minutes=1)
-        self.schedule_message(finish_work_text, first_work_end)
-        self.schedule_message(finish_work_text, second_work_end)
-        self.schedule_message(finish_work_text, third_work_end)
+        for i in range(0, 24, work_step):
+            work_time = date + timedelta(hours=i, minutes=0)
+            finish_time = work_time + timedelta(hours=2, minutes=1)
+            self.schedule_message(work_text, work_time)
+            self.schedule_message(finish_work_text, finish_time)

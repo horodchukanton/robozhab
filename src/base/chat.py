@@ -3,8 +3,8 @@ from datetime import datetime
 from telethon import utils
 from telethon.tl import functions
 
-from src.base.settings import Settings
-from src.base.tg_client import get_client, APIClient
+from base.settings import Settings
+from base.tg_client import get_client, APIClient
 
 
 async def get_chat_id_from_invite(invite_hash):

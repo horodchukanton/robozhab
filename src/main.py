@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from game import from_settings
-from src.base.settings import get_settings
+from base.settings import get_settings
 
 logging.basicConfig(
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',

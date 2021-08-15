@@ -1,12 +1,10 @@
 from functools import lru_cache
-from typing import Type
 
-from pydantic import BaseSettings, validator
-from pydantic.schema import datetime
+from pydantic import BaseSettings
 from datetime import timezone, timedelta
 
 
-@lru_cache
+@lru_cache(maxsize=1)
 def get_settings():
     return Settings()
 

@@ -4,10 +4,10 @@ from functools import lru_cache
 from telethon.sync import TelegramClient
 from telethon.tl import types
 
-from src.base.settings import Settings, get_settings
+from base.settings import Settings, get_settings
 
 
-@lru_cache
+@lru_cache(maxsize=1)
 def get_client():
     return APIClient()
 
@@ -26,7 +26,8 @@ class APIClient:
         api_id = settings.api_id
         api_hash = settings.api_hash
 
-        client = TelegramClient('anon', api_id, api_hash)
+        client = TelegramClient('anon', api_id, api_hash).start()
+
         client.connect()
         return client
 
