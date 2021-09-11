@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     feed_text: str = "Покормить жабу"
     feed_freq: int = 12
 
+    has_a_child: bool = False
+    has_a_clan: bool = False
+
     @property
     def tz(self) -> timezone:
         utcoffset = self.__dict__.get('timezone')

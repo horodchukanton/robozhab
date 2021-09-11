@@ -58,6 +58,12 @@ class Game(Chat):
             finish_time = work_time + timedelta(hours=2, minutes=1)
             self.schedule_message(finish_work_text, finish_time)
 
+        if self.config.has_a_child:
+            feed_child_text = "Покормить жабёнка"
+            for i in range(0, 24, 12):
+                feed_child_time = date + timedelta(hours=i, minutes=0)
+                self.schedule_message(feed_child_text, feed_child_time)
+
     def schedule(self):
         for i in range(self.config.schedule_days):
             date = datetime.now(tz=self.config.tz) + timedelta(days=i)
