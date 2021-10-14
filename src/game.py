@@ -51,12 +51,14 @@ class Game(Chat):
         for i in range(0, 24, self.config.work_freq):
 
             work_time = date + timedelta(hours=i, minutes=0)
-            if self.config.work_reanimate:
-                self.schedule_message("Реанимировать жабу", work_time)
             self.schedule_message(work_text, work_time)
 
             finish_time = work_time + timedelta(hours=2, minutes=1)
             self.schedule_message(finish_work_text, finish_time)
+
+            if self.config.work_reanimate:
+                reanimate_time = finish_time + timedelta(seconds=5)
+                self.schedule_message("Реанимировать жабу", reanimate_time)
 
         if self.config.has_a_child:
             feed_child_text = "Покормить жабёнка"
