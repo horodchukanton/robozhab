@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime
-from base.chat import Chat, resolve_chat_id
-from base.settings import Settings
+from robozhab.base.chat import Chat, resolve_chat_id
+from robozhab.base.settings import Settings
 
 
 class Game(Chat):
@@ -18,15 +18,16 @@ class Game(Chat):
 
     @staticmethod
     def get_next_offset():
+        # pylint: disable=fixme
         # TODO: This looks ugly AF, there should be a better solution
-        with open('.offset', 'r') as f:
+        with open('.offset', 'r', encoding='UTF-8') as f:
             current = f.readline(-1)
             if current == "":
                 current = 0
 
         result = int(current) + 1
 
-        with open('.offset', 'w') as f:
+        with open('.offset', 'w', encoding='UTF-8') as f:
             f.write(f"{result}")
 
         return result

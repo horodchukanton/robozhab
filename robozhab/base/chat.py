@@ -1,9 +1,10 @@
 from datetime import datetime
 
+import telethon.tl.types
 from telethon import utils
 
-from base.settings import Settings
-from base.tg_client import get_client, APIClient
+from robozhab.base.settings import Settings
+from robozhab.base.tg_client import get_client, APIClient
 
 
 def resolve_chat_id(s):
@@ -14,6 +15,8 @@ def resolve_chat_id(s):
 
     if chat_id < 0:
         real_id, peer_type = utils.resolve_id(chat_id)
+        assert isinstance(peer_type, telethon.tl.types.Chat)
+
         chat_id = real_id
 
     return chat_id

@@ -1,0 +1,7 @@
+[pylint]
+disable = W0702,W0703,E1101,E1120,R0201,R0902,R0903,R0904,R0913,R0914,C0103,C0111,C0330
+ignore-docstrings = yes
+max-line-length=79
+expected-line-ending-format=LF
+min-similarity-lines=100
+extension-pkg-whitelist=pydantic

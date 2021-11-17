@@ -1,0 +1,10 @@
+anon.session
+.env
+.offset
+
+.pyenv
+.python-version
+.gitignore
+
+.idea
+*.iml

@@ -4,7 +4,7 @@ from functools import lru_cache
 from telethon.sync import TelegramClient
 from telethon.tl import types
 
-from base.settings import Settings, get_settings
+from robozhab.base.settings import Settings, get_settings
 
 
 @lru_cache(maxsize=1)

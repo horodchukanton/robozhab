@@ -1,11 +1,13 @@
 from functools import lru_cache
 
+import datetime
 from pydantic import BaseSettings
-from datetime import timezone, timedelta
 
 
 @lru_cache(maxsize=1)
-def get_settings():
+def get_settings(filename: str = None):
+    if filename:
+        return Settings(_env_file=filename)
     return Settings()
 
 
@@ -27,9 +29,9 @@ class Settings(BaseSettings):
     has_a_clan: bool = False
 
     @property
-    def tz(self) -> timezone:
+    def tz(self) -> datetime.timezone:
         utcoffset = self.__dict__.get('timezone')
-        return timezone(timedelta(hours=utcoffset))
+        return datetime.timezone(datetime.timedelta(hours=utcoffset))
 
     class Config:
         case_sensitive = True
