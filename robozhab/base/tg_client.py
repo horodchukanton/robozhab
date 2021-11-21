@@ -1,15 +1,9 @@
 from datetime import datetime
-from functools import lru_cache
 
 from telethon.sync import TelegramClient
 from telethon.tl import types
 
 from robozhab.base.settings import Settings
-
-
-@lru_cache(maxsize=1)
-def get_client(settings: Settings):
-    return APIClient(settings)
 
 
 class APIClient:

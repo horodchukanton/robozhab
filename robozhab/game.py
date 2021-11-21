@@ -14,6 +14,11 @@ class Game(Chat):
         super().__init__(client, chat_id)
         self.settings = settings
 
+    def schedule(self):
+        for i in range(self.settings.schedule_days):
+            date = datetime.now(tz=self.settings.tz) + timedelta(days=i)
+            self.schedule_day(date)
+
     @staticmethod
     def get_next_offset():
         # pylint: disable=fixme
@@ -64,8 +69,3 @@ class Game(Chat):
             for i in range(0, 24, 12):
                 feed_child_time = date + timedelta(hours=i, minutes=0)
                 self.schedule_message(feed_child_text, feed_child_time)
-
-    def schedule(self):
-        for i in range(self.settings.schedule_days):
-            date = datetime.now(tz=self.settings.tz) + timedelta(days=i)
-            self.schedule_day(date)

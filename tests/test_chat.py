@@ -2,7 +2,7 @@ from unittest import mock
 
 from _pytest.fixtures import fixture
 
-from robozhab.base.chat import Chat, from_settings
+from robozhab.base.chat import Chat
 from robozhab.base.settings import Settings
 
 
@@ -16,6 +16,6 @@ class TestChat:
     def settings(self):
         return Settings()
 
-    def test_sanity(self, settings):
-        chat = from_settings(settings)
+    def test_sanity(self, client, settings):
+        chat = Chat(client, settings)
         assert chat

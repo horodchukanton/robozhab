@@ -1,15 +1,7 @@
 from datetime import datetime
 
 from telethon import utils
-
-from robozhab.base.settings import Settings
 from robozhab.base.tg_client import APIClient
-
-
-def from_settings(settings: Settings):
-    chat_id = Chat.resolve_chat_id(settings.chat_id)
-    client = APIClient(settings)
-    return Chat(client, chat_id)
 
 
 class Chat:
