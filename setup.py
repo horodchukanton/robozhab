@@ -34,13 +34,13 @@ setup(
     include_package_data=True,
     classifiers=[
         'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Software Development :: Libraries',
     ],
     scripts=[
-        'robozhab/main.py',
+        'scripts/robozhab',
     ],
     install_requires=read_requirements('requirements.txt'),
-    tests_require=read_requirements('requirements.txt'),
+    tests_require=read_requirements('requirements_dev.txt'),
     zip_safe=False,
 )

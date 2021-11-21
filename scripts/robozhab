@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import argparse
+
+import injector
+
+from robozhab.game import Game
+from robozhab.main import Main
+
+
+def args():
+    parser = argparse.ArgumentParser(description='Get configuration')
+    parser.add_argument('--config',
+                        type=str, nargs='?', help='path to config.env')
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    config_file = args().config
+    container = injector.Injector(Main(config_file), use_annotations=True)
+    game = container.get(Game)
+    game.schedule()

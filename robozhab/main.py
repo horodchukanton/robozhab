@@ -1,6 +1,8 @@
-import argparse
 import logging
-from robozhab.base.settings import get_settings
+import injector
+
+from robozhab.base.tg_client import APIClient
+from robozhab.base.settings import get_settings, Settings
 from robozhab.game import Game
 
 logging.basicConfig(
@@ -8,16 +10,18 @@ logging.basicConfig(
     level=logging.INFO)
 
 
-def main(settings_file: str = None):
-    settings = get_settings(settings_file)
-    game = Game.from_settings(settings)
-    game.schedule()
+class Main(injector.Module):
+    def __init__(self, config_path: str) -> None:
+        self._config_path = config_path
 
+    @injector.provider
+    def _settings(self) -> Settings:
+        return get_settings(self._config_path)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Get configuration')
-    parser.add_argument('--config',
-                        type=str, nargs='?', help='path to config.env')
+    @injector.provider
+    def _tg_client(self, settings: Settings) -> APIClient:
+        return APIClient(settings)
 
-    args = parser.parse_args()
-    main(args.config)
+    @injector.provider
+    def _game(self, settings: Settings, client: APIClient) -> Game:
+        return Game(client, settings)

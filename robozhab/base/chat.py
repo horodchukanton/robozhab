@@ -1,44 +1,34 @@
 from datetime import datetime
 
-import telethon.tl.types
 from telethon import utils
 
 from robozhab.base.settings import Settings
-from robozhab.base.tg_client import get_client, APIClient
-
-
-def resolve_chat_id(s):
-    chat_id = s.chat_id
-
-    if chat_id is None:
-        raise Exception("No 'chat_id' was specified")
-
-    if chat_id < 0:
-        real_id, peer_type = utils.resolve_id(chat_id)
-        assert isinstance(peer_type, telethon.tl.types.Chat)
-
-        chat_id = real_id
-
-    return chat_id
+from robozhab.base.tg_client import APIClient
 
 
 def from_settings(settings: Settings):
-    chat_id = resolve_chat_id(settings)
-    return Chat(chat_id)
+    chat_id = Chat.resolve_chat_id(settings.chat_id)
+    client = APIClient(settings)
+    return Chat(client, chat_id)
 
 
 class Chat:
     chat_id: int
     client: APIClient
 
-    def __init__(self, chat_id):
+    def __init__(self, client: APIClient, chat_id: int):
         self.chat_id = self.resolve_chat_id(chat_id)
-        self.client = get_client()
+        self.client = client
 
     @staticmethod
     def resolve_chat_id(chat_id):
+        if chat_id is None:
+            raise Exception("No 'chat_id' was specified")
+
         if chat_id < 0:
-            return utils.resolve_id(chat_id)
+            chat_id, peer_type = utils.resolve_id(chat_id)
+            assert peer_type
+
         return chat_id
 
     def send_message(self, message: str, **kwargs):

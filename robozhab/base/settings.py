@@ -12,7 +12,7 @@ def get_settings(filename: str = None):
 
 
 class Settings(BaseSettings):
-    api_id: str
+    api_id: int
     api_hash: str
     chat_id: int = None
     timezone: int = +3
@@ -34,6 +34,6 @@ class Settings(BaseSettings):
         return datetime.timezone(datetime.timedelta(hours=utcoffset))
 
     class Config:
-        case_sensitive = True
+        case_sensitive = False
         env_file = '.env'
         env_file_encoding = 'utf-8'

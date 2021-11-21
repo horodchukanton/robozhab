@@ -4,24 +4,24 @@ from functools import lru_cache
 from telethon.sync import TelegramClient
 from telethon.tl import types
 
-from robozhab.base.settings import Settings, get_settings
+from robozhab.base.settings import Settings
 
 
 @lru_cache(maxsize=1)
-def get_client():
-    return APIClient()
+def get_client(settings: Settings):
+    return APIClient(settings)
 
 
 class APIClient:
     telethon: TelegramClient
     settings: Settings
 
-    def __init__(self):
-        self.telethon = self.login()
-        self.settings = get_settings()
+    def __init__(self, settings: Settings):
+        self.telethon = self.login(settings)
+        self.tz = settings.tz
 
-    def login(self):
-        settings = get_settings()
+    @staticmethod
+    def login(settings: Settings):
         # Use your own values from my.telegram.org
         api_id = settings.api_id
         api_hash = settings.api_hash
@@ -41,7 +41,7 @@ class APIClient:
         """Sends message to the chat at given time.
         If the time is in past, will skip sending and return false"""
 
-        if datetime.now(tz=self.settings.tz) > schedule:
+        if datetime.now(tz=self.tz) > schedule:
             return False
 
         return self.send_message(recipient=recipient,
@@ -57,4 +57,6 @@ class APIClient:
                                            **kwargs)
 
     def __del__(self):
+        if not self.telethon:
+            return
         self.telethon.disconnect()

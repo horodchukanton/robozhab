@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  tests-image: &tests-image
+    image: robozhab-dev
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
+
+  prod-image:
+    image: horodchukanton/robozhab
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+
+  tests:
+    <<: *tests-image
+    command: sh -c "tox"
