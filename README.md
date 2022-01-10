@@ -1,3 +1,6 @@
+*master* - 
+[![Python package](https://github.com/horodchukanton/robozhab/actions/workflows/default.yaml/badge.svg?branch=master)](https://github.com/horodchukanton/robozhab/actions/workflows/default.yaml)
+
 ## Robozhab
 
 This is a python telethon based client that will go and schedule your daily messages.
