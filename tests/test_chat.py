@@ -17,5 +17,5 @@ class TestChat:
         return Settings()
 
     def test_sanity(self, client, settings):
-        chat = Chat(client, settings)
+        chat = Chat(client, settings.chat_id)
         assert chat
