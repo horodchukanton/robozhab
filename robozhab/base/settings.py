@@ -14,7 +14,7 @@ def get_settings(filename: str = None):
 class Settings(BaseSettings):
     api_id: int
     api_hash: str
-    chat_id: int = None
+    chat_id: int
     timezone: int = +3
 
     schedule_days: int = 5
