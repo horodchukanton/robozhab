@@ -16,6 +16,6 @@ def args():
 
 if __name__ == '__main__':
     config_file = args().config
-    container = injector.Injector(Main(config_file), use_annotations=True)
+    container = injector.Injector(Main(config_file))
     game = container.get(Game)
     game.schedule()

@@ -16,7 +16,6 @@ class APIClient:
 
     @staticmethod
     def login(settings: Settings):
-        # Use your own values from my.telegram.org
         api_id = settings.api_id
         api_hash = settings.api_hash
 
