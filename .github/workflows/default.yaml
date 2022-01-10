@@ -25,6 +25,7 @@ jobs:
       run: tox -vv
 
   docker-image:
+    steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build . --file docker/Dockerfile --tag horodchukanton/robozhab
