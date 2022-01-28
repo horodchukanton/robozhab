@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir -q -r requirements.txt
 COPY ./ /app/
 RUN pip install -q -e .
 
-CMD ['python3', 'robozhab/main.py']
+CMD 'robozhab'
