@@ -1,12 +1,12 @@
 from datetime import timedelta, datetime
 
-from robozhab.base.tg_client import APIClient
 from robozhab.base.chat import Chat
 from robozhab.base.settings import Settings
+from robozhab.base.tg_client import APIClient
+from robozhab.game.info import ZhabaInfo
 
 
 class Game(Chat):
-
     settings: Settings = None
 
     def __init__(self, client: APIClient, settings: Settings):
@@ -15,45 +15,35 @@ class Game(Chat):
         self.settings = settings
 
     def schedule(self):
+        # Check if we have scheduled messages pending
+
+        # Check if is available to run now
+
+        schedule_start = datetime.now(tz=self.settings.tz)
+
         for i in range(self.settings.schedule_days):
-            date = datetime.now(tz=self.settings.tz) + timedelta(days=i)
-            self.schedule_day(date)
+            date = schedule_start + timedelta(days=i)
 
-    @staticmethod
-    def get_next_offset():
-        # pylint: disable=fixme
-        # TODO: This looks ugly AF, there should be a better solution
-        with open('.offset', 'r', encoding='UTF-8') as f:
-            current = f.readline(-1)
-            if current == "":
-                current = 0
+            if self.settings.feed_freq:
+                self.schedule_daily_feed(date)
 
-        result = int(current) + 1
+            if self.settings.work_freq:
+                self.schedule_daily_work(date)
 
-        with open('.offset', 'w', encoding='UTF-8') as f:
-            f.write(f"{result}")
+            if self.settings.has_a_child:
+                self.schedule_daily_child_feed(date)
 
-        return result
-
-    def schedule_day(self, date: datetime):
-        # Normalizing
-        date = date.replace(hour=0, minute=0, second=0)
-
-        # The main bot has a lag, so we should set up a one minute offset
-        offset = self.get_next_offset()
-        date = date + timedelta(minutes=offset)
-
-        # Feed time
+    def schedule_daily_feed(self, date: datetime):
         feed_text = self.settings.feed_text
         for i in range(0, 24, self.settings.feed_freq):
             feed_time = date + timedelta(hours=i, minutes=0)
             self.schedule_message(feed_text, feed_time)
 
-        # Work time
+    def schedule_daily_work(self, date: datetime):
         work_text = self.settings.work_text
         finish_work_text = "Завершить работу"
-        for i in range(0, 24, self.settings.work_freq):
 
+        for i in range(0, 24, self.settings.work_freq):
             work_time = date + timedelta(hours=i, minutes=0)
             self.schedule_message(work_text, work_time)
 
@@ -64,8 +54,33 @@ class Game(Chat):
                 reanimate_time = finish_time + timedelta(seconds=5)
                 self.schedule_message("Реанимировать жабу", reanimate_time)
 
-        if self.settings.has_a_child:
-            feed_child_text = "Покормить жабёнка"
-            for i in range(0, 24, 12):
-                feed_child_time = date + timedelta(hours=i, minutes=0)
-                self.schedule_message(feed_child_text, feed_child_time)
+    def schedule_daily_child_feed(self, date: datetime):
+        feed_child_text = "Покормить жабёнка"
+        for i in range(0, 24, 12):
+            feed_child_time = date + timedelta(hours=i, minutes=0)
+            self.schedule_message(feed_child_text, feed_child_time)
+
+
+class FeedLoop:
+    available_in: int = None
+    feed_period = 8 * 60
+    premium_feed_period = 6 * 60
+    overfeed_period = 4 * 60
+
+    def __init__(self, settings: Settings, info: ZhabaInfo):
+        self._info = info
+        self.settings = settings
+
+    def next_available_datetime(self):
+        pass
+
+    def is_available_now(self):
+        if self.settings.feed_text.lower() == "Покормить жабу":
+            return not self._info.feed_in_minutes
+        elif self.settings.feed_text.lower() == "Откормить жабу":
+            return not self._info.overfeed_in_minutes
+        return None
+
+    def next_available(self, date=None):
+        if not date and self.is_available_now:
+            return datetime.now(tz=self.settings.tz)
