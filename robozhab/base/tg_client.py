@@ -26,8 +26,8 @@ class APIClient:
 
     def send_message(self, recipient: id, message: str, **kwargs):
         """Sends message to the chat"""
-        self.telethon.send_message(entity=types.PeerChannel(recipient),
-                                   message=message, **kwargs)
+        return self.telethon.send_message(entity=types.PeerChannel(recipient),
+                                          message=message, **kwargs)
 
     def schedule_message(self, recipient: id, message: str, schedule: datetime,
                          **kwargs):
