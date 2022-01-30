@@ -1,4 +1,4 @@
-name: Python package
+name: tests
 
 on:
   - push
@@ -23,10 +23,3 @@ jobs:
         python -m pip install tox tox-gh-actions
     - name: Test with tox
       run: tox -vv
-
-  docker-image:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build . --file docker/Dockerfile --tag horodchukanton/robozhab
